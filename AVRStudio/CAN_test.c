@@ -52,9 +52,10 @@ int16_t main(void)
 
 	_delay_ms(50);
 
-	DPY_v_trm_s01__Init_f(); 					// A kijelzõ panel iniciálása
-	CAN_v_mcp2515_init_f();						// A CAN kommunikáció iniciálása
-	CAN_v_can_receive_message_ISR_ENABLE_f(); 	// Üzenet fogadás engedélyezve
+	DPY_v_trm_s01__Init_f(); 							// A kijelzõ panel iniciálása
+	CAN_v_mcp2515_init_f();								// A CAN kommunikáció iniciálása
+	CAN_v_mcp2515_Set_standard_filter_RxF0_f(0x0100);	// Filter beállítása???
+	CAN_v_can_receive_message_ISR_ENABLE_f(); 			// Üzenet fogadás engedélyezve
 
 	TMR_v_timer1_Init_f(50);
 	TMR_v_timer1_start_f();
