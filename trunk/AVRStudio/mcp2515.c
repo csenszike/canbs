@@ -342,13 +342,13 @@
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
-CAN_message rx_message;
+volatile CAN_message rx_message;
 volatile bool New_message_flag=false;
 
 /*===================================================[ INTERNAL PROTOTYPES ]=*/
 /* static functions only! */
 
-ISR(SIG_INTERRUPT0);
+ISR(SIG_INTERRUPT5);
 static void mcp2515_reset(void);
 static void mcp2515_TxBuffern_ready_to_send(unsigned short buffer);
 static void mcp2515_write(unsigned char adr,unsigned char data);
@@ -356,13 +356,13 @@ static unsigned char mcp2515_read(unsigned char adr);
 static unsigned char mcp2515_read_status(void);
 static unsigned char mcp2515_read_rx_status(void);
 static void mcp2515_bit_modify(unsigned char adr, unsigned char mask, unsigned char data);
-static void INT0_IT_ENABLE(void);
-static void INT0_IT_DISABLE(void);
+static void INT5_IT_ENABLE(void);
+static void INT5_IT_DISABLE(void);
 
 /*=========================================[ INTERNAL FUNCTION DEFINITIONS ]=*/
 
 /********  External Interrupt Request 0 ISR  ****************/
-ISR(SIG_INTERRUPT0)
+ISR(SIG_INTERRUPT5)
 {
 
 	uint8_t data,i;
@@ -485,15 +485,16 @@ static void mcp2515_bit_modify(unsigned char adr, unsigned char mask, unsigned c
 }
 
 /********  function  *****************/
-static void INT0_IT_ENABLE(void)
+static void INT5_IT_ENABLE(void)
 {
-	EICRA=0;         // The low level of INT0 generates an interrupt request
-	EIMSK=(1<<INT0); // INT5: External Interrupt Request 0 Enable
+	EIFR =(1<<INTF5);
+	EICRB=(1<<ISC51); // The falling edge of INT5 generates an interrupt request
+	EIMSK=(1<<INT5); // INT5: External Interrupt Request 5 Enable
 }
 
 
 /********  function  *****************/
-static void INT0_IT_DISABLE(void)
+static void INT5_IT_DISABLE(void)
 {
     EIMSK=0;         // External Interrupt Request disable
 }
@@ -553,10 +554,14 @@ MCP2515_INT_DIR_INPUT();
 	mcp2515_write( RXM1EID0, 0 );
 	
 	// Setting the mask every message is machd to a filter
-	mcp2515_write( RXM1SIDH, 0xFF );
-	mcp2515_write( RXM1SIDL, 0xFF );
-	mcp2515_write( RXM1EID8, 0xFF );
-	mcp2515_write( RXM1EID0, 0xFF );
+//	mcp2515_write( RXM0SIDH, 0xFF );
+//	mcp2515_write( RXM0SIDL, 0xFF );
+//	mcp2515_write( RXM0EID8, 0xFF );
+//	mcp2515_write( RXM0EID0, 0xFF );
+
+	CAN_v_mcp2515_Set_standard_mask_Rx0_f(0x07FF);		// Mask beállítása
+//	CAN_v_mcp2515_Set_standard_filter_RxF0_f(0x0100);	// Filter beállítása???
+	CAN_v_mcp2515_Set_standard_filter_RxF1_f(0x01E0);	// Filter beállítása???
 	
 	mcp2515_write( CANINTE, (1<<RX0IE));	// Setting IT control
 	
@@ -621,13 +626,14 @@ void can_receive_message(CAN_message *p_message)
 /********  can_receive_message_ISR_ENABLE ******************************************/
 void can_receive_message_ISR_ENABLE(void)
 {
-	INT0_IT_ENABLE();
+	INT5_IT_ENABLE();
+	mcp2515_bit_modify(CANINTF, (1<<RX0IF), 0);
 }
 
 /********  can_receive_message_ISR_ENABLE ******************************************/
 void can_receive_message_ISR_DISABLE(void)
 {
-	INT0_IT_DISABLE();
+	INT5_IT_DISABLE();
 }
 
 

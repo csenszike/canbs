@@ -26,7 +26,7 @@
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
-static CAN_st_message_t L_MAIN_msg_message;
+static volatile CAN_st_message_t L_MAIN_msg_message;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -41,7 +41,7 @@ int16_t main(void);
 /*******  20 ms timer1 interrupt  ***********/
 ISR(SIG_OUTPUT_COMPARE1A)
 {
-	L_MAIN_msg_message.data[0]++;
+//	L_MAIN_msg_message.data[0]++;
 	CAN_v_can_send_standard_message_f(&L_MAIN_msg_message);	// CAN üzenetküldés
 }
 
@@ -54,7 +54,6 @@ int16_t main(void)
 
 	DPY_v_trm_s01__Init_f(); 							// A kijelzõ panel iniciálása
 	CAN_v_mcp2515_init_f();								// A CAN kommunikáció iniciálása
-	CAN_v_mcp2515_Set_standard_filter_RxF0_f(0x0100);	// Filter beállítása???
 	CAN_v_can_receive_message_ISR_ENABLE_f(); 			// Üzenet fogadás engedélyezve
 
 	TMR_v_timer1_Init_f(50);
@@ -75,7 +74,11 @@ int16_t main(void)
 		if(CAN_vbl_New_message_flag){
 			cli();
 			CAN_vbl_New_message_flag=false;
-			DPY_u8_trm_s01__7seq_write_number_f(CAN_msg_rx_message.data[2], 0);
+//			DPY_u8_trm_s01__7seq_write_number_f(CAN_msg_rx_message.data[0], 0);
+			if(CAN_msg_rx_message.id == 0x0100)
+				L_MAIN_msg_message.data[0] = CAN_msg_rx_message.data[0];
+			else if(CAN_msg_rx_message.id == 0x01E0)
+				L_MAIN_msg_message.data[1] = CAN_msg_rx_message.data[0];
 			sei();
 		}
 	}
