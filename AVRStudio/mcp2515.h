@@ -59,7 +59,7 @@ typedef struct
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
-extern CAN_message rx_message;
+extern volatile CAN_message rx_message;
 extern volatile bool New_message_flag;
 
 /*=========================================[ EXTPORTED FUNCTION PROTOTYPES ]=*/
