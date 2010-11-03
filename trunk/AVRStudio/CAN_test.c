@@ -1,3 +1,9 @@
+/**@file CAN_test.c
+* @brief Simple example program for using the MCP2515 CAN interface
+* @author Gergo Farkas
+* @version 1.0
+* @date 2010-11-04
+*/
 /*****************************************************************************
 * Title: Rendszertervezés HF                                                 *
 * Hardware: CAN/LIN extension board for mitmót system                        *
@@ -26,15 +32,15 @@
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
-static volatile CAN_st_message_t L_MAIN_msg_message;
+static volatile CAN_st_message_t L_MAIN_msg_message; /**< Global message*/
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
 /*===================================================[ INTERNAL PROTOTYPES ]=*/
 /* static functions only! */
 
-ISR(SIG_OUTPUT_COMPARE1A);
-int16_t main(void);
+ISR(SIG_OUTPUT_COMPARE1A);	/**< Timer/Counter1 CompareMatch Interrupt Subroutin*/
+int16_t main(void);			/**< The main function*/
 
 /*=========================================[ INTERNAL FUNCTION DEFINITIONS ]=*/
 
