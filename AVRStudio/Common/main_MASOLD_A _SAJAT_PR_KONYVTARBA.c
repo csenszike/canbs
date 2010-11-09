@@ -73,11 +73,11 @@ int16_t main(void)
 		// Ha van új üzenet
 		if(CAN_vbl_New_message_flag){
 			cli();
-			PRC_v_refresh_control_f()
+			PRC_v_refresh_control_f();
 			sei();
-			PRC_v_process_f()
+			PRC_v_process_f();
 			cli();
-			PRC_v_refresh_status_f()
+			PRC_v_refresh_status_f();
 			sei();
 
 		}
