@@ -18,11 +18,11 @@
 
 /*==============================================================[ INCLUDES ]=*/
 
-#include "platform.h"
+#include "..\Common\platform.h"
 
-#include "mcp2515.h"
-#include "dpy_trm_s01.h"
-#include "TIMER.h"
+#include "..\Common\mcp2515.h"
+#include "..\Common\dpy_trm_s01.h"
+#include "..\Common\TIMER.h"
 
 /*=================================================[ COMPILER SWITCH CHECK ]=*/
 
