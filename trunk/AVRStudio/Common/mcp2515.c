@@ -520,11 +520,14 @@ static void INT5_IT_DISABLE(void)
   ********************************************************************/
 
 
-void mcp2515_init(void)
+void mcp2515_init(uint16_t filter1, uint16_t filter2)
 {
+
+bool only1filter;
 
 MCP2515_CS_DIR_OUTPUT();
 MCP2515_INT_DIR_INPUT();
+
 
 #if ARM_LPC2106	
 	SPI_Init(0,0,0,20);
@@ -532,6 +535,15 @@ MCP2515_INT_DIR_INPUT();
 	SPI_Init(0,0,0,4);
 #endif
 
+if (filter1==filter2)
+{
+	only1filter=true;
+}
+else
+{
+	only1filter=false;
+}
+	
 
 // Reseting the CAN controller
 	mcp2515_reset();
@@ -545,23 +557,29 @@ MCP2515_INT_DIR_INPUT();
 	mcp2515_write(CNF3,R_CNF3_500kbps);// Phase 2 setup
 	
 	mcp2515_write( RXB0CTRL, 0 ); // Receives messages enabled by filter 0, no rollower alloved
-	mcp2515_write( RXB1CTRL, 0 ); // Receives messages enabled by filter
+	if (only1filter==false)
+	{
+		mcp2515_write( RXB1CTRL, 0 ); // Receives messages enabled by filter
+	}
 	
 	// Clearing the mask every message is accepted
-	mcp2515_write( RXM1SIDH, 0 );
-	mcp2515_write( RXM1SIDL, 0 );
-	mcp2515_write( RXM1EID8, 0 );
-	mcp2515_write( RXM1EID0, 0 );
+//	mcp2515_write( RXM1SIDH, 0 );
+//	mcp2515_write( RXM1SIDL, 0 );
+//	mcp2515_write( RXM1EID8, 0 );
+//	mcp2515_write( RXM1EID0, 0 );
 	
 	// Setting the mask every message is machd to a filter
-//	mcp2515_write( RXM0SIDH, 0xFF );
-//	mcp2515_write( RXM0SIDL, 0xFF );
-//	mcp2515_write( RXM0EID8, 0xFF );
-//	mcp2515_write( RXM0EID0, 0xFF );
+	mcp2515_write( RXM0SIDH, 0xFF );
+	mcp2515_write( RXM0SIDL, 0xFF );
+	mcp2515_write( RXM0EID8, 0xFF );
+	mcp2515_write( RXM0EID0, 0xFF );
 
 	CAN_v_mcp2515_Set_standard_mask_Rx0_f(0x07FF);		// Mask beállítása
-//	CAN_v_mcp2515_Set_standard_filter_RxF0_f(0x0100);	// Filter beállítása???
-	CAN_v_mcp2515_Set_standard_filter_RxF1_f(0x01E0);	// Filter beállítása???
+	CAN_v_mcp2515_Set_standard_filter_RxF0_f(filter1);	// Filter beállítása???
+	if (only1filter==false)
+	{
+		CAN_v_mcp2515_Set_standard_filter_RxF1_f(filter2);	// Filter beállítása???
+	}
 	
 	mcp2515_write( CANINTE, (1<<RX0IE));	// Setting IT control
 	

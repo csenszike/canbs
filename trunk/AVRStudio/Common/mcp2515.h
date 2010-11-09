@@ -81,7 +81,7 @@ extern volatile bool New_message_flag;
  *
  * Note:          none
   ********************************************************************/
-extern void mcp2515_init(void);
+extern void mcp2515_init(uint16_t filter1, uint16_t filter2);
 
 /*********************************************************************
  * Function: 	  void can_receive_message(CAN_message *p_message)
