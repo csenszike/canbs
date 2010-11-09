@@ -37,7 +37,7 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Objects that must be built in order to link
-OBJECTS = dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o FrontLeftDoor.o PRC.o 
+OBJECTS = dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o main.o PRC.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -58,7 +58,7 @@ mcu_avr_atmega128_api.o: ../../Common/mcu_avr_atmega128_api.c
 TIMER.o: ../../Common/TIMER.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-FrontLeftDoor.o: ../FrontLeftDoor.c
+main.o: ../main.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 PRC.o: ../PRC.c
