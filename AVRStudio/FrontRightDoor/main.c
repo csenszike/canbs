@@ -1,6 +1,6 @@
 /**@file CAN_test.c
 * @brief Simple example program for using the MCP2515 CAN interface
-* @author Gabor Fodor
+* @author Gergo Farkas
 * @version 1.0
 * @date 2010-11-04
 */
@@ -8,7 +8,7 @@
 * Title: Rendszertervezés HF                                                 *
 * Hardware: CAN/LIN extension board for mitmót system                        *
 * Processor: ATMEGA128                                                       *
-* Author: Gábor Fodor                                                       *
+* Author: Gergo Farkas                                                       *
 * Date:                                                      *
 * Compiler: avr-gcc                                                          *
 * ------------------------------                                             *

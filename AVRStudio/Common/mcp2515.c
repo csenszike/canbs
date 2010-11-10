@@ -388,7 +388,7 @@ ISR(SIG_INTERRUPT5)
 			SPI_byte(0,&data);
 			rx_message.data[i] = data;
 		}
-		
+				
 		// Setting the new message flag
 		New_message_flag=true;
 
