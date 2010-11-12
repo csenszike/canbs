@@ -1,43 +1,37 @@
 /*
-
-	ADC driver
-
+	PRC driver
 */
-
-
 /*=================================================[ COMPILER SWITCH CHECK ]=*/
 
 /*===========================================================[ HEADER INIT ]=*/
-
-#ifndef TIMER_H
-#define TIMER_H
-
-
+#ifndef PRC_H
+#define PRC_H
 /*=======================================================[ EXTERNAL MACROS ]=*/
 /* macro constants and read macros */
 
+#define PRC_U16_FILTER1		0x0100
+#define PRC_U16_FILTER2		0x0100
+
 /*=====================================================[ EXTERNAL TYPEDEFS ]=*/
 /* State Machine Constants */
-
-
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 /* Just for debug !!!!*/
-extern volatile uint8_t TMR_u8_OST_cnt;
+
+extern CAN_st_message_t PRC_stm_tx_message;
 
 /*=========================================[ EXTPORTED FUNCTION PROTOTYPES ]=*/
 
-extern void TMR_v_timer0_Init_f(void);
-extern void TMR_v_timer1_Init_f(uint16_t);
-extern void TMR_v_timer1_start_f(void);
-extern void TMR_v_timer1_stop_f(void);
-extern void TMR_v_timer3_Init_f(uint16_t);
-extern void TMR_v_start_OST_f(uint16_t);
+extern void PRC_v_init_f(void);
+extern void PRC_v_refresh_control_f(void);
+extern void PRC_v_process_f(void);
+extern void PRC_v_refresh_status_f(void);
+extern void PRC_v_20mstick_f(void);
 
-
-#endif /* TIMER_H */
+#endif /* PRC_H */
 /*
  *===========================================================================*
  * End of File                                                         
  *===========================================================================*
 */
+
 
