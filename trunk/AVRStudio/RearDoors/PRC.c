@@ -19,9 +19,10 @@
 /*==============================================================[ INCLUDES ]=*/
 
 #include "..\Common\platform.h"
-
-#include "PRC.h"
 #include "..\Common\dpy_trm_s01.h"
+#include "..\Common\mcp2515.h"
+#include "PRC.h"
+
 
 /*=================================================[ COMPILER SWITCH CHECK ]=*/
 
@@ -108,7 +109,7 @@ static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value)
 }
 
 
-/
+
 
 /*=========================================[ EXPORTED FUNCTION DEFINITIONS ]=*/
 
