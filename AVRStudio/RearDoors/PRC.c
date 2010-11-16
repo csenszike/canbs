@@ -184,15 +184,15 @@ void PRC_v_refresh_message_status_f()
 
 void PRC_v_refresh_local_control_f()
 {
-	L_PRC_vbl_win_engine_up_rearbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
-	L_PRC_vbl_win_engine_down_rearbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
+	L_PRC_vbl_win_engine_up_rearbutton=  !DPY_TRM_S01__BUTTON_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_rearbutton=!DPY_TRM_S01__BUTTON_2_GET_STATE();
 }
 
 void PRC_v_refresh_local_status_f()
 {
-	L_PRC_vbl_win_engine_up_state=!DPY_TRM_S01__LED_1_GET_STATE();
-	L_PRC_vbl_win_engine_down_state=!DPY_TRM_S01__LED_2_GET_STATE();
-	L_PRC_vbl_lock_rear_state=!DPY_TRM_S01__LED_3_GET_STATE();
+	L_PRC_vbl_win_engine_up_state=DPY_TRM_S01__LED_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_state=DPY_TRM_S01__LED_2_GET_STATE();
+	L_PRC_vbl_lock_rear_state=DPY_TRM_S01__LED_3_GET_STATE();
 
 }
 
