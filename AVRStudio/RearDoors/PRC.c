@@ -170,11 +170,9 @@ void PRC_v_process_f()
 	}
 
 	/************** KÖZPONTI ZÁR ****************/
-	// Központi zár vezérlése a bal ajtóról  (ha megnyomjuk a gombot a központi zár állapota megváltozik)
-	if(L_PRC_vbl_lock_frontleftbutton)
-	{
-		L_PRC_vbl_lock_rearstatus=L_PRC_vbl_lock_frontleftstatus;	
-	}
+	// Központi zár vezérlése a bal ajtóról
+		L_PRC_vbl_lock_frontleftstatus=L_PRC_vbl_lock_frontleftstatus;	
+
 
 	/************** VEZÉRLÉS ****************/
 	if(L_PRC_vbl_win_engine_up_status) DPY_TRM_S01__LED_1_ON();
