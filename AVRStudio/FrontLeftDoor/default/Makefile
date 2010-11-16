@@ -37,7 +37,7 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Objects that must be built in order to link
-OBJECTS = dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o main.o PRC.o 
+OBJECTS = main.o PRC.o dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -46,6 +46,12 @@ LINKONLYOBJECTS =
 all: $(TARGET) CAN_test.hex CAN_test.eep size
 
 ## Compile
+main.o: ../main.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+PRC.o: ../PRC.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
 dpy_trm_s01.o: ../../Common/dpy_trm_s01.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
@@ -56,12 +62,6 @@ mcu_avr_atmega128_api.o: ../../Common/mcu_avr_atmega128_api.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 TIMER.o: ../../Common/TIMER.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
-
-main.o: ../main.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
-
-PRC.o: ../PRC.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link

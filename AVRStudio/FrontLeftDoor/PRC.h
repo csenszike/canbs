@@ -34,6 +34,7 @@ extern void PRC_v_init_f(void);
 extern void PRC_v_refresh_control_f(void);
 extern void PRC_v_process_f(void);
 extern void PRC_v_refresh_status_f(void);
+extern void PRC_v_20mstick_f(void);
 
 #endif /* PRC_H */
 /*

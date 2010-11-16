@@ -46,8 +46,10 @@ int16_t main(void);			/**< The main function*/
 /*******  20 ms timer1 interrupt  ***********/
 ISR(SIG_OUTPUT_COMPARE1A)
 {
-//	L_MAIN_msg_message.data[0]++;
+	PRC_v_refresh_status_f();
 	CAN_v_can_send_standard_message_f(&PRC_stm_tx_message);	// CAN üzenetküldés
+	//System tick a PRC-nek
+	PRC_v_20mstick_f();
 }
 
 
@@ -76,9 +78,7 @@ int16_t main(void)
 			PRC_v_refresh_control_f();
 			sei();
 			PRC_v_process_f();
-			cli();
-			PRC_v_refresh_status_f();
-			sei();
+			
 
 		}
 	}
@@ -93,17 +93,3 @@ int16_t main(void)
  * End of File                                                         
  *===========================================================================*
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
