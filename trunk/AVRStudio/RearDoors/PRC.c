@@ -41,6 +41,7 @@
 	#define L_REA_WINDW 6
 #endif
 
+
 /*=====================================================[ INTERNAL TYPEDEFS ]=*/
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
@@ -108,11 +109,8 @@ void PRC_v_init_f(void)
 }
 
 
-void PRC_v_refresh_control_f()
+void PRC_v_refresh_remote_control_f()
 {
-	L_PRC_vbl_win_engine_up_rearbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
-	L_PRC_vbl_win_engine_down_rearbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
-	
 	L_PRC_vbl_win_engine_up_control=    L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINUP);
 	L_PRC_vbl_win_engine_down_control=  L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINDW);
 	L_PRC_vbl_lock_frontleftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);
@@ -156,8 +154,7 @@ void PRC_v_process_f()
 	// Központi zár vezérlése a bal ajtóról
 		L_PRC_vbl_lock_frontleftstatus=L_PRC_vbl_lock_frontleftstatus;	
 
-
-	/************** VEZÉRLÉS ****************/
+		/************** VEZÉRLÉS ****************/
 	if(L_PRC_vbl_win_engine_up_status) DPY_TRM_S01__LED_1_ON();
 	else DPY_TRM_S01__LED_1_OFF();
 
@@ -166,17 +163,28 @@ void PRC_v_process_f()
 
 	if(L_PRC_vbl_lock_rearstatus) DPY_TRM_S01__LED_3_ON();
 	else DPY_TRM_S01__LED_3_OFF();
+
 }
 
-void PRC_v_refresh_status_f()
+void PRC_v_refresh_message_status_f()
 {
-	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINUP,L_PRC_vbl_win_engine_up_rearbutton);
-	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINDW,L_PRC_vbl_win_engine_down_rearbutton);
 	L_PRC_bl_set_msg_byte_bit_f(1,7,L_PRC_vbl_win_engine_up_status);
 	L_PRC_bl_set_msg_byte_bit_f(1,6,L_PRC_vbl_win_engine_down_status);
 	L_PRC_bl_set_msg_byte_bit_f(1,0,L_PRC_vbl_lock_rearstatus);
 	L_PRC_bl_set_msg_byte_bit_f(0,7,L_PRC_vbl_ECU_status);
 
+}
+
+void PRC_v_refresh_local_control_f()
+{
+	L_PRC_vbl_win_engine_up_rearbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_rearbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
+}
+
+void PRC_v_refresh_local_status_f()
+{
+	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINUP,L_PRC_vbl_win_engine_up_rearbutton);
+	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINDW,L_PRC_vbl_win_engine_down_rearbutton);
 }
 
 void PRC_v_20mstick_f()
