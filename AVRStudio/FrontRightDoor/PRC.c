@@ -159,19 +159,19 @@ static bool L_PRC_v_heat_getstatus_f(void)
 static void L_PRC_v_window_up_f(void)
 {
 	L_PRC_dpy_data1=1;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_window_down_f(void)
 {
 	L_PRC_dpy_data1=2;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_window_stop_f(void)
 {
 	L_PRC_dpy_data1=0;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static bool L_PRC_v_window_up_getstatus_f(void)
@@ -195,31 +195,31 @@ static bool L_PRC_v_window_down_getstatus_f(void)
 static void L_PRC_v_mirror_stop_f(void)
 {
 	L_PRC_dpy_data2=0;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_mirror_left_f(void)
 {
 	L_PRC_dpy_data2=4;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_mirror_right_f(void)
 {
 	L_PRC_dpy_data2=3;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_mirror_down_f(void)
 {
 	L_PRC_dpy_data2=2;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static void L_PRC_v_mirror_up_f(void)
 {
 	L_PRC_dpy_data2=1;
-	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
 }
 
 static bool L_PRC_v_mirror_left_getstatus_f(void)
