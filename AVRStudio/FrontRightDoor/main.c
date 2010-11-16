@@ -1,6 +1,6 @@
 /**@file CAN_test.c
 * @brief Simple example program for using the MCP2515 CAN interface
-* @author Gergo Farkas
+* @author Gabor Fodor
 * @version 1.0
 * @date 2010-11-04
 */
@@ -8,7 +8,7 @@
 * Title: Rendszertervezés HF                                                 *
 * Hardware: CAN/LIN extension board for mitmót system                        *
 * Processor: ATMEGA128                                                       *
-* Author: Gergo Farkas                                                       *
+* Author: Gábor Fodor                                                       *
 * Date:                                                      *
 * Compiler: avr-gcc                                                          *
 * ------------------------------                                             *
@@ -32,6 +32,7 @@
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
+bool CAN_vbl_20msTimer_flag=false;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -46,8 +47,11 @@ int16_t main(void);			/**< The main function*/
 /*******  20 ms timer1 interrupt  ***********/
 ISR(SIG_OUTPUT_COMPARE1A)
 {
-//	L_MAIN_msg_message.data[0]++;
+	PRC_v_refresh_message_status_f();
 	CAN_v_can_send_standard_message_f(&PRC_stm_tx_message);	// CAN üzenetküldés
+	//System tick a PRC-nek
+	PRC_v_20mstick_f();
+	CAN_vbl_20msTimer_flag=true;
 }
 
 
@@ -72,14 +76,18 @@ int16_t main(void)
 		
 		// Ha van új üzenet
 		if(CAN_vbl_New_message_flag){
+			CAN_vbl_New_message_flag=false;
 			cli();
-			PRC_v_refresh_control_f();
+			PRC_v_refresh_remote_control_f();
 			sei();
+			
+		}
+		if(CAN_vbl_20msTimer_flag)
+		{
+			CAN_vbl_20msTimer_flag=false;
+			PRC_v_refresh_local_control_f();
 			PRC_v_process_f();
-			cli();
-			PRC_v_refresh_status_f();
-			sei();
-
+			PRC_v_refresh_local_status_f();
 		}
 	}
 
@@ -93,17 +101,3 @@ int16_t main(void)
  * End of File                                                         
  *===========================================================================*
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-

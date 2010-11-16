@@ -261,6 +261,7 @@ static bool L_PRC_v_mirror_up_getstatus_f(void)
 
 /*=========================================[ EXPORTED FUNCTION DEFINITIONS ]=*/
 
+
 /********  Initialisation  ***************************/
 void PRC_v_init_f(void)
 {
@@ -270,6 +271,11 @@ void PRC_v_init_f(void)
 	PRC_stm_tx_message.data[0] = 0;
 	PRC_stm_tx_message.data[1] = 0;	
 	PRC_stm_tx_message.data[2] = 0; // Egy CAN üzenet összeállítása
+}
+
+/********  PRC_v_20mstick_f  ***************************/
+void PRC_v_20mstick_f(void)
+{
 }
 
 /********  Refresh remote controls  ***************************/
@@ -364,7 +370,7 @@ void PRC_v_process_f(void)
 }
 
 /********  Refresh message status  ***************************/
-void PRC_v_refresh_status_f(void)
+void PRC_v_refresh_message_status_f(void)
 {
 	L_PRC_bl_set_msg_byte_bit_f(0,3,L_PRC_vbl_win_engine_up_rightbutton);
 	L_PRC_bl_set_msg_byte_bit_f(0,2,L_PRC_vbl_win_engine_down_rightbutton);
