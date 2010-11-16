@@ -147,7 +147,7 @@ void PRC_v_refresh_remote_control_f(void)
 }
 
 /********  Refresh msg status  ***************************/
-void PRC_v_refresh_msg_status_f(void)
+void PRC_v_refresh_message_status_f(void)
 {
 	/* Byte 0 */
 	L_PRC_bl_set_msg_byte_bit_f(0,7,L_PRC_vbl_right_rear_window_up_bs);
@@ -187,7 +187,7 @@ void PRC_v_refresh_msg_status_f(void)
 }
 
 /********  Refresh local controls  ***************************/
-void PRC_v_refresh_local_control()
+void PRC_v_refresh_local_control_f()
 {
 	/* mirror select switch status */
 	L_PRC_vbl_mirror_select_bs = DPY_TRM_S01__SWITCH_1_GET_STATE();
@@ -311,6 +311,11 @@ void PRC_v_process_f(void)
 
 	if(L_PRC_vbl_mirror_heat_es) DPY_TRM_S01__LED_2_ON();
 	else DPY_TRM_S01__LED_2_OFF();
+}
+
+/********  Refresh local status  ***************************/
+void PRC_v_refresh_local_status_f()
+{
 }
 
 /********  PRC 20mstick  ***************************/
