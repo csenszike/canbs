@@ -196,45 +196,45 @@ void PRC_v_refresh_local_control_f()
 	if(DPY_TRM_S01__SWITCH_4_GET_STATE())
 	{
 		/* heat button status */
-		L_PRC_vbl_mirror_heat_bs = DPY_TRM_S01__BUTTON_1_GET_STATE();
+		L_PRC_vbl_mirror_heat_bs = !DPY_TRM_S01__BUTTON_1_GET_STATE();
 
 		/* mirror button status */
-		L_PRC_vbl_mirror_up_bs = DPY_TRM_S01__BUTTON_2_GET_STATE();
-		L_PRC_vbl_mirror_down_bs = DPY_TRM_S01__BUTTON_3_GET_STATE();
+		L_PRC_vbl_mirror_up_bs = !DPY_TRM_S01__BUTTON_2_GET_STATE();
+		L_PRC_vbl_mirror_down_bs = !DPY_TRM_S01__BUTTON_3_GET_STATE();
 	}
 	/* SW4 = 0 => heat, mirror up/down */
 	else
 	{
 		/* lock button status */
-		L_PRC_vbl_lock_button_pressed_bs = DPY_TRM_S01__BUTTON_1_GET_STATE();
+		L_PRC_vbl_lock_button_pressed_bs = !DPY_TRM_S01__BUTTON_1_GET_STATE();
 
 		/* SW2:3 = 00 */
 		if(!DPY_TRM_S01__SWITCH_2_GET_STATE() && !DPY_TRM_S01__SWITCH_3_GET_STATE())
 		{
 			/* left front window button status */
-			L_PRC_vbl_left_front_window_up_bs = DPY_TRM_S01__BUTTON_2_GET_STATE();
-			L_PRC_vbl_left_front_window_down_bs = DPY_TRM_S01__BUTTON_3_GET_STATE();
+			L_PRC_vbl_left_front_window_up_bs = !DPY_TRM_S01__BUTTON_2_GET_STATE();
+			L_PRC_vbl_left_front_window_down_bs = !DPY_TRM_S01__BUTTON_3_GET_STATE();
 		}
 		/* SW2:3 = 01 */
 		else if(!DPY_TRM_S01__SWITCH_2_GET_STATE() && DPY_TRM_S01__SWITCH_3_GET_STATE())
 		{
 			/* right front window button status */
-			L_PRC_vbl_right_front_window_up_bs = DPY_TRM_S01__BUTTON_2_GET_STATE();
-			L_PRC_vbl_right_front_window_down_bs = DPY_TRM_S01__BUTTON_3_GET_STATE();
+			L_PRC_vbl_right_front_window_up_bs = !DPY_TRM_S01__BUTTON_2_GET_STATE();
+			L_PRC_vbl_right_front_window_down_bs = !DPY_TRM_S01__BUTTON_3_GET_STATE();
 		}
 		/* SW2:3 = 10 */
 		else if(DPY_TRM_S01__SWITCH_2_GET_STATE() && !DPY_TRM_S01__SWITCH_3_GET_STATE())
 		{
 			/* left rear window button status */
-			L_PRC_vbl_left_rear_window_up_bs = DPY_TRM_S01__BUTTON_2_GET_STATE();
-			L_PRC_vbl_left_rear_window_down_bs = DPY_TRM_S01__BUTTON_3_GET_STATE();
+			L_PRC_vbl_left_rear_window_up_bs = !DPY_TRM_S01__BUTTON_2_GET_STATE();
+			L_PRC_vbl_left_rear_window_down_bs = !DPY_TRM_S01__BUTTON_3_GET_STATE();
 		}
 		/* SW2:3 = 11 */
 		else if(DPY_TRM_S01__SWITCH_2_GET_STATE() && DPY_TRM_S01__SWITCH_3_GET_STATE())
 		{
 			/* right rear window button status */
-			L_PRC_vbl_right_rear_window_up_bs = DPY_TRM_S01__BUTTON_2_GET_STATE();
-			L_PRC_vbl_right_rear_window_down_bs = DPY_TRM_S01__BUTTON_3_GET_STATE();
+			L_PRC_vbl_right_rear_window_up_bs = !DPY_TRM_S01__BUTTON_2_GET_STATE();
+			L_PRC_vbl_right_rear_window_down_bs = !DPY_TRM_S01__BUTTON_3_GET_STATE();
 		}
 	}
 
