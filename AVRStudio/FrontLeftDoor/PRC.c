@@ -278,6 +278,47 @@ void PRC_v_process_f(void)
 		L_PRC_vbl_window_motor_up_es = false;
 	}
 
+	/************** TÜKÖR ****************/
+	// Tükör helyi vezérlése (amíg nyomva tartjuk a gombot, addig mozog a tükör)
+	if(    L_PRC_vbl_mirror_up_bs || L_PRC_vbl_mirror_down_bs
+		|| L_PRC_vbl_mirror_left_bs || L_PRC_vbl_mirror_right_bs)
+	{
+		if(L_PRC_vbl_mirror_up_bs)        //Mirror Up 
+		{
+			L_PRC_vbl_mirror_left_es = false;	
+			L_PRC_vbl_mirror_right_es = false;	
+			L_PRC_vbl_mirror_down_es = false;	
+			L_PRC_vbl_mirror_up_es = true;
+		}	 
+		else if(L_PRC_vbl_mirror_down_bs)  //Mirror Down
+		{
+			L_PRC_vbl_mirror_left_es = false;	
+			L_PRC_vbl_mirror_right_es = false;	
+			L_PRC_vbl_mirror_down_es = true;	
+			L_PRC_vbl_mirror_up_es = false;
+		}  
+		else if(L_PRC_vbl_mirror_left_bs)  //Mirror Left
+		{
+			L_PRC_vbl_mirror_left_es = true;	
+			L_PRC_vbl_mirror_right_es = false;	
+			L_PRC_vbl_mirror_down_es = false;	
+			L_PRC_vbl_mirror_up_es = false;
+		}  
+		else if(L_PRC_vbl_mirror_right_bs)  //Mirror Right
+		{
+			L_PRC_vbl_mirror_left_es = false;	
+			L_PRC_vbl_mirror_right_es = true;	
+			L_PRC_vbl_mirror_down_es = false;	
+			L_PRC_vbl_mirror_up_es = false;
+		}  
+	}
+	else
+	{
+		L_PRC_vbl_mirror_left_es = false;	
+		L_PRC_vbl_mirror_right_es = false;	
+		L_PRC_vbl_mirror_down_es = false;	
+		L_PRC_vbl_mirror_up_es = false;
+	}
 
 	/************** KÖZPONTI ZÁR ****************/
 	L_PRC_vbl_lock_es = L_PRC_vbl_lock_control;
