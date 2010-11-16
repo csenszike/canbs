@@ -45,8 +45,8 @@ static volatile bool L_PRC_vbl_lock_leftbutton= false;
 
 /* Left rear door status bits  (0x120)*/
 // Byte 3
-static volatile bool L_PRC_vbl_lock_leftstatus= false;
-static volatile bool L_PRC_vbl_win_mirror_heat_leftstatus= false;
+//static volatile bool L_PRC_vbl_lock_leftstatus= false;
+//static volatile bool L_PRC_vbl_win_mirror_heat_leftstatus= false;
 
 
 /* Own control bits (0x121)*/
@@ -288,11 +288,11 @@ void PRC_v_refresh_remote_control_f(void)
 	L_PRC_vbl_win_mirror_down_control=  L_PRC_bl_get_msg_byte_bit_f(1,5);
 	L_PRC_vbl_win_mirror_up_control=    L_PRC_bl_get_msg_byte_bit_f(1,4);
 	L_PRC_vbl_win_mirror_select_control=L_PRC_bl_get_msg_byte_bit_f(1,3);
-	L_PRC_vbl_win_mirror_heat_control=  L_PRC_bl_get_msg_byte_bit_f(1,2);
-	L_PRC_vbl_lock_leftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);
+	L_PRC_vbl_win_mirror_heat_control=  L_PRC_bl_get_msg_byte_bit_f(4,6);
+	L_PRC_vbl_lock_leftbutton=          L_PRC_bl_get_msg_byte_bit_f(4,7);
 	
-	L_PRC_vbl_lock_leftstatus= 			  L_PRC_bl_get_msg_byte_bit_f(4,7);
-	L_PRC_vbl_win_mirror_heat_leftstatus= L_PRC_bl_get_msg_byte_bit_f(4,6);
+//	L_PRC_vbl_lock_leftstatus= 			  L_PRC_bl_get_msg_byte_bit_f(4,7);
+//	L_PRC_vbl_win_mirror_heat_leftstatus= L_PRC_bl_get_msg_byte_bit_f(4,6);
 }
 
 
