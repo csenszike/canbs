@@ -563,17 +563,17 @@ else
 	}
 	
 	// Clearing the mask every message is accepted
-//	mcp2515_write( RXM1SIDH, 0 );
-//	mcp2515_write( RXM1SIDL, 0 );
-//	mcp2515_write( RXM1EID8, 0 );
-//	mcp2515_write( RXM1EID0, 0 );
+	mcp2515_write( RXM1SIDH, 0 );
+	mcp2515_write( RXM1SIDL, 0 );
+	mcp2515_write( RXM1EID8, 0 );
+	mcp2515_write( RXM1EID0, 0 );
 	
 	// Setting the mask every message is machd to a filter
-	mcp2515_write( RXM0SIDH, 0xFF );
+/*	mcp2515_write( RXM0SIDH, 0xFF );
 	mcp2515_write( RXM0SIDL, 0xFF );
 	mcp2515_write( RXM0EID8, 0xFF );
 	mcp2515_write( RXM0EID0, 0xFF );
-
+*/
 	CAN_v_mcp2515_Set_standard_mask_Rx0_f(0x07FF);		// Mask beállítása
 	CAN_v_mcp2515_Set_standard_filter_RxF0_f(filter1);	// Filter beállítása???
 	if (only1filter==false)
