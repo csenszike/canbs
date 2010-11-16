@@ -1,7 +1,7 @@
 /**@file PRC.c
 * @brief Rear Doors process program
 * @author Balazs Fuli
-* @version 1.1
+* @version 1.2
 * @date 2010-11-11
 */
 /*****************************************************************************
@@ -42,21 +42,6 @@
 #endif
 
 /*=====================================================[ INTERNAL TYPEDEFS ]=*/
-
-/**
- *static volatile bool L_PRC_vbl_status_ECU = false;
- *static volatile bool L_PRC_vbl_status_win_up = false;
- *static volatile bool L_PRC_vbl_status_btn_win_up = false;
- *static volatile bool L_PRC_vbl_status_win_down = false;
- *static volatile bool L_PRC_vbl_status_btn_win_down = false;
- *static volatile bool L_PRC_vbl_status_lock = false;
- *
- *
- *static volatile bool L_PRC_vbl_cmd_win_up = false;
- *static volatile bool L_PRC_vbl_cmd_win_down = false;
- *static volatile bool L_PRC_vbl_cmd_lock = false;
- */
-
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
@@ -107,8 +92,6 @@ static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value)
 	else
 		PRC_stm_tx_message.data[byte] &= ~(1<<bit);
 }
-
-
 
 
 /*=========================================[ EXPORTED FUNCTION DEFINITIONS ]=*/
