@@ -299,9 +299,9 @@ void PRC_v_refresh_remote_control_f(void)
 /********  Refresh local controls  ***************************/
 void PRC_v_refresh_local_control_f(void)
 {
-	L_PRC_vbl_win_engine_up_rightbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
-	L_PRC_vbl_win_engine_down_rightbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
-	L_PRC_vbl_lock_rightbutton=           DPY_TRM_S01__BUTTON_3_GET_STATE();
+	L_PRC_vbl_win_engine_up_rightbutton=  !DPY_TRM_S01__BUTTON_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_rightbutton=!DPY_TRM_S01__BUTTON_2_GET_STATE();
+	L_PRC_vbl_lock_rightbutton=           !DPY_TRM_S01__BUTTON_3_GET_STATE();
 }
 
 /********  Process data  ***************************/
