@@ -280,8 +280,9 @@ void PRC_v_process_f(void)
 
 	/************** TÜKÖR ****************/
 	// Tükör helyi vezérlése (amíg nyomva tartjuk a gombot, addig mozog a tükör)
-	if(    L_PRC_vbl_mirror_up_bs || L_PRC_vbl_mirror_down_bs
-		|| L_PRC_vbl_mirror_left_bs || L_PRC_vbl_mirror_right_bs)
+	if(  !L_PRC_vbl_mirror_select_bs &&
+		  (L_PRC_vbl_mirror_up_bs || L_PRC_vbl_mirror_down_bs
+		|| L_PRC_vbl_mirror_left_bs || L_PRC_vbl_mirror_right_bs))
 	{
 		if(L_PRC_vbl_mirror_up_bs)        //Mirror Up 
 		{
