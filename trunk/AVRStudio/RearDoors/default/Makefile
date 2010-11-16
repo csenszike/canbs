@@ -8,8 +8,6 @@ MCU = atmega128
 TARGET = CAN_test.elf
 CC = avr-gcc
 
-CPP = avr-g++
-
 ## Options common to compile, link and assembly rules
 COMMON = -mmcu=$(MCU)
 
@@ -87,5 +85,5 @@ clean:
 	-rm -rf $(OBJECTS) CAN_test.elf dep/* CAN_test.hex CAN_test.eep
 
 ## Other dependencies
--include $(shell mkdir dep 2>NUL) $(wildcard dep/*)
+-include $(shell mkdir dep 2>/dev/null) $(wildcard dep/*)
 
