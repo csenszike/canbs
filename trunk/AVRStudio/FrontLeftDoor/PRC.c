@@ -89,7 +89,7 @@ static volatile bool L_PRC_vbl_mirror_heat_control			= false;	//6
 
 /* For state machines */
 
-static volatile bool L_PRC_vbl_lock_and		= false;
+static volatile bool L_PRC_vbl_lock_or		= false;
 static volatile bool L_PRC_vbl_lock_prev	= false;
 static volatile bool L_PRC_vbl_heat_prev	= false;
 
@@ -243,13 +243,13 @@ void PRC_v_refresh_local_control_f()
 /********  Process data  ***************************/
 void PRC_v_process_f(void)
 {
-	L_PRC_vbl_lock_and = L_PRC_vbl_RRD_lock_button_pressed && L_PRC_vbl_lock_button_pressed_bs;
+	L_PRC_vbl_lock_or = L_PRC_vbl_RRD_lock_button_pressed || L_PRC_vbl_lock_button_pressed_bs;
 
 	/* Changing lock state on rising edge */
-	if(L_PRC_vbl_lock_and && !L_PRC_vbl_lock_prev)
+	if(L_PRC_vbl_lock_or && !L_PRC_vbl_lock_prev)
 		L_PRC_vbl_lock_control = !L_PRC_vbl_lock_control;
 
-	L_PRC_vbl_lock_prev = L_PRC_vbl_lock_and;
+	L_PRC_vbl_lock_prev = L_PRC_vbl_lock_or;
 
 	/* Changing heat state on rising edge */
 	if(L_PRC_vbl_mirror_heat_bs && !L_PRC_vbl_heat_prev)
