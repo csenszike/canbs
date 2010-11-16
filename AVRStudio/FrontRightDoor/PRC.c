@@ -2,7 +2,8 @@
 /*==============================================================[ INCLUDES ]=*/
 
 #include "..\Common\platform.h"
-
+#include "..\Common\mcp2515.h"
+#include "..\Common\dpy_trm_s01.h"
 #include "PRC.h"
 
 
@@ -13,7 +14,7 @@
 #define SEG_SPACE 10
 
 /* Number Table 0 1 2 3 4 5 6 7 8 9 None - Dot */
-const unsigned char seg_numbers[13]={
+const unsigned char s_n[13]={
 	0x28, 0xF9, 0x1C,
 	0x58, 0xC9, 0x4A,
 	0x0A, 0xF8, 0x08,
@@ -86,6 +87,27 @@ CAN_st_message_t PRC_stm_tx_message;
 
 static bool L_PRC_bl_get_msg_byte_bit_f(uint8_t byte,uint8_t bit);
 static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value);
+static void L_PRC_v_lock_on_f(void);
+static void L_PRC_v_lock_off_f(void);
+static bool L_PRC_v_lock_getstatus_f(void);
+static void L_PRC_v_heat_on_f(void);
+static void L_PRC_v_heat_off_f(void);
+static bool L_PRC_v_heat_getstatus_f(void);
+static void L_PRC_v_window_up_f(void);
+static void L_PRC_v_window_down_f(void);
+static void L_PRC_v_window_stop_f(void);
+static bool L_PRC_v_window_up_getstatus_f(void);
+static bool L_PRC_v_window_down_getstatus_f(void);
+static void L_PRC_v_mirror_stop_f(void);
+static void L_PRC_v_mirror_left_f(void);
+static void L_PRC_v_mirror_right_f(void);
+static void L_PRC_v_mirror_down_f(void);
+static void L_PRC_v_mirror_up_f(void);
+static bool L_PRC_v_mirror_left_getstatus_f(void);
+static bool L_PRC_v_mirror_right_getstatus_f(void);
+static bool L_PRC_v_mirror_down_getstatus_f(void);
+static bool L_PRC_v_mirror_up_getstatus_f(void);
+
 
 /*=========================================[ INTERNAL FUNCTION DEFINITIONS ]=*/
 
@@ -137,19 +159,19 @@ static bool L_PRC_v_heat_getstatus_f(void)
 static void L_PRC_v_window_up_f(void)
 {
 	L_PRC_dpy_data1=1;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_window_down_f(void)
 {
 	L_PRC_dpy_data1=2;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_window_stop_f(void)
 {
 	L_PRC_dpy_data1=0;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static bool L_PRC_v_window_up_getstatus_f(void)
@@ -173,31 +195,31 @@ static bool L_PRC_v_window_down_getstatus_f(void)
 static void L_PRC_v_mirror_stop_f(void)
 {
 	L_PRC_dpy_data2=0;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_mirror_left_f(void)
 {
 	L_PRC_dpy_data2=4;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_mirror_right_f(void)
 {
 	L_PRC_dpy_data2=3;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_mirror_down_f(void)
 {
 	L_PRC_dpy_data2=2;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static void L_PRC_v_mirror_up_f(void)
 {
 	L_PRC_dpy_data2=1;
-	dpy_trm_s01__7seq_write_3digit(seg_numbers[L_PRC_dpy_data1],seg_numbers[L_PRC_dpy_data2],seg_numbers[L_PRC_dpy_data3]);
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data1],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data3]);
 }
 
 static bool L_PRC_v_mirror_left_getstatus_f(void)
@@ -250,13 +272,9 @@ void PRC_v_init_f(void)
 	PRC_stm_tx_message.data[2] = 0; // Egy CAN üzenet összeállítása
 }
 
-/********  Refresh controls  ***************************/
-void PRC_v_refresh_control_f(void)
+/********  Refresh remote controls  ***************************/
+void PRC_v_refresh_remote_control_f(void)
 {
-	L_PRC_vbl_win_engine_up_rightbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
-	L_PRC_vbl_win_engine_down_rightbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
-	L_PRC_vbl_lock_rightbutton=           DPY_TRM_S01__BUTTON_3_GET_STATE();
-
 	L_PRC_vbl_win_engine_up_control=    L_PRC_bl_get_msg_byte_bit_f(0,3);
 	L_PRC_vbl_win_engine_down_control=  L_PRC_bl_get_msg_byte_bit_f(0,2);
 	L_PRC_vbl_win_mirror_left_control=  L_PRC_bl_get_msg_byte_bit_f(1,7);
@@ -269,6 +287,15 @@ void PRC_v_refresh_control_f(void)
 	
 	L_PRC_vbl_lock_leftstatus= 			  L_PRC_bl_get_msg_byte_bit_f(4,7);
 	L_PRC_vbl_win_mirror_heat_leftstatus= L_PRC_bl_get_msg_byte_bit_f(4,6);
+}
+
+
+/********  Refresh local controls  ***************************/
+void PRC_v_refresh_local_control_f(void)
+{
+	L_PRC_vbl_win_engine_up_rightbutton=  DPY_TRM_S01__BUTTON_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_rightbutton=DPY_TRM_S01__BUTTON_2_GET_STATE();
+	L_PRC_vbl_lock_rightbutton=           DPY_TRM_S01__BUTTON_3_GET_STATE();
 }
 
 /********  Process data  ***************************/
@@ -292,6 +319,7 @@ void PRC_v_process_f(void)
 		if(L_PRC_vbl_win_engine_up_rightbutton)				L_PRC_v_window_up_f();
 		//Window Down	 
 		else if(L_PRC_vbl_win_engine_down_rightbutton)		L_PRC_v_window_down_f();
+	}
 	
 	// Ha nincs vezérlés, az ablak nem mozog
 	else	L_PRC_v_window_stop_f();
@@ -333,24 +361,11 @@ void PRC_v_process_f(void)
 	}
 	else	L_PRC_v_mirror_stop_f();
 
-
 }
 
-/********  Refresh status  ***************************/
+/********  Refresh message status  ***************************/
 void PRC_v_refresh_status_f(void)
 {
-	// Getting real state of the actuators
-	L_PRC_vbl_win_engine_down_status=L_PRC_v_window_up_getstatus_f();
-	L_PRC_vbl_win_engine_up_status=L_PRC_v_window_up_getstatus_f();
-	L_PRC_vbl_lock_rightstatus= L_PRC_v_lock_getstatus_f();
-	L_PRC_vbl_win_mirror_heat_rightstatus=L_PRC_v_heat_getstatus_f();
-	L_PRC_vbl_win_mirror_left_status=L_PRC_v_mirror_left_getstatus_f();
-	L_PRC_vbl_win_mirror_right_status=L_PRC_v_mirror_right_getstatus_f();
-	L_PRC_vbl_win_mirror_down_status=L_PRC_v_mirror_down_getstatus_f();
-	L_PRC_vbl_win_mirror_up_status=L_PRC_v_mirror_up_getstatus_f();
-
-
-
 	L_PRC_bl_set_msg_byte_bit_f(0,3,L_PRC_vbl_win_engine_up_rightbutton);
 	L_PRC_bl_set_msg_byte_bit_f(0,2,L_PRC_vbl_win_engine_down_rightbutton);
 	L_PRC_bl_set_msg_byte_bit_f(0,0,L_PRC_vbl_lock_rightbutton);
@@ -363,6 +378,22 @@ void PRC_v_refresh_status_f(void)
 	L_PRC_bl_set_msg_byte_bit_f(1,1,L_PRC_vbl_win_mirror_up_status);
 	L_PRC_bl_set_msg_byte_bit_f(1,0,L_PRC_vbl_lock_rightstatus);
 	L_PRC_bl_set_msg_byte_bit_f(0,7,L_PRC_vbl_ECU_status);
+
+}
+
+/********  Refresh status  ***************************/
+void PRC_v_refresh_local_status_f(void)
+{
+	// Getting real state of the actuators
+	L_PRC_vbl_win_engine_down_status=		L_PRC_v_window_down_getstatus_f();
+	L_PRC_vbl_win_engine_up_status=			L_PRC_v_window_up_getstatus_f();
+	L_PRC_vbl_lock_rightstatus= 			L_PRC_v_lock_getstatus_f();
+	L_PRC_vbl_win_mirror_heat_rightstatus=	L_PRC_v_heat_getstatus_f();
+	L_PRC_vbl_win_mirror_left_status=		L_PRC_v_mirror_left_getstatus_f();
+	L_PRC_vbl_win_mirror_right_status=		L_PRC_v_mirror_right_getstatus_f();
+	L_PRC_vbl_win_mirror_down_status=		L_PRC_v_mirror_down_getstatus_f();
+	L_PRC_vbl_win_mirror_up_status=			L_PRC_v_mirror_up_getstatus_f();
+
 }
 
 
