@@ -64,11 +64,16 @@ static volatile bool L_PRC_vbl_win_engine_down_rearbutton= false;
 
 /* Own status bits (0x121)*/
 // Byte 1
+static volatile bool L_PRC_vbl_win_engine_up_state= false;
+static volatile bool L_PRC_vbl_win_engine_down_state= false;
+static volatile bool L_PRC_vbl_lock_rear_state= false;
+// Byte 2
+static volatile bool L_PRC_vbl_ECU_status= false;
+
+/* Internal control bits */
 static volatile bool L_PRC_vbl_win_engine_up_status= false;
 static volatile bool L_PRC_vbl_win_engine_down_status= false;
 static volatile bool L_PRC_vbl_lock_rearstatus= false;
-// Byte 2
-static volatile bool L_PRC_vbl_ECU_status= false;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -113,8 +118,7 @@ void PRC_v_refresh_remote_control_f()
 {
 	L_PRC_vbl_win_engine_up_control=    L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINUP);
 	L_PRC_vbl_win_engine_down_control=  L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINDW);
-	L_PRC_vbl_lock_frontleftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);
-	
+	L_PRC_vbl_lock_frontleftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);	
 	L_PRC_vbl_lock_frontleftstatus= 			L_PRC_bl_get_msg_byte_bit_f(4,7);
 }
 
@@ -168,10 +172,13 @@ void PRC_v_process_f()
 
 void PRC_v_refresh_message_status_f()
 {
-	L_PRC_bl_set_msg_byte_bit_f(1,7,L_PRC_vbl_win_engine_up_status);
-	L_PRC_bl_set_msg_byte_bit_f(1,6,L_PRC_vbl_win_engine_down_status);
-	L_PRC_bl_set_msg_byte_bit_f(1,0,L_PRC_vbl_lock_rearstatus);
+	L_PRC_bl_set_msg_byte_bit_f(1,7,L_PRC_vbl_win_engine_up_state);
+	L_PRC_bl_set_msg_byte_bit_f(1,6,L_PRC_vbl_win_engine_down_state);
+	L_PRC_bl_set_msg_byte_bit_f(1,0,L_PRC_vbl_lock_rear_state);
 	L_PRC_bl_set_msg_byte_bit_f(0,7,L_PRC_vbl_ECU_status);
+
+	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINUP,L_PRC_vbl_win_engine_up_rearbutton);
+	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINDW,L_PRC_vbl_win_engine_down_rearbutton);
 
 }
 
@@ -183,8 +190,10 @@ void PRC_v_refresh_local_control_f()
 
 void PRC_v_refresh_local_status_f()
 {
-	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINUP,L_PRC_vbl_win_engine_up_rearbutton);
-	L_PRC_bl_set_msg_byte_bit_f(0,L_REA_WINDW,L_PRC_vbl_win_engine_down_rearbutton);
+	L_PRC_vbl_win_engine_up_state=!DPY_TRM_S01__LED_1_GET_STATE();
+	L_PRC_vbl_win_engine_down_state=!DPY_TRM_S01__LED_2_GET_STATE();
+	L_PRC_vbl_lock_rear_state=!DPY_TRM_S01__LED_3_GET_STATE();
+
 }
 
 void PRC_v_20mstick_f()
