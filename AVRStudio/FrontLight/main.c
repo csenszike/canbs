@@ -32,6 +32,7 @@
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
+bool CAN_vbl_20msTimer_flag=false;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -46,10 +47,11 @@ int16_t main(void);			/**< The main function*/
 /*******  20 ms timer1 interrupt  ***********/
 ISR(SIG_OUTPUT_COMPARE1A)
 {
-	PRC_v_refresh_status_f();
+	PRC_v_refresh_message_status_f();
 	CAN_v_can_send_standard_message_f(&PRC_stm_tx_message);	// CAN üzenetküldés
 	//System tick a PRC-nek
 	PRC_v_20mstick_f();
+	CAN_vbl_20msTimer_flag=true;
 }
 
 
@@ -74,12 +76,18 @@ int16_t main(void)
 		
 		// Ha van új üzenet
 		if(CAN_vbl_New_message_flag){
+			CAN_vbl_New_message_flag=false;
 			cli();
-			PRC_v_refresh_control_f();
+			PRC_v_refresh_remote_control_f();
 			sei();
-			PRC_v_process_f();
 			
-
+		}
+		if(CAN_vbl_20msTimer_flag)
+		{
+			CAN_vbl_20msTimer_flag=false;
+			PRC_v_refresh_local_control_f();
+			PRC_v_process_f();
+			PRC_v_refresh_local_status_f();
 		}
 	}
 
@@ -93,17 +101,3 @@ int16_t main(void)
  * End of File                                                         
  *===========================================================================*
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-

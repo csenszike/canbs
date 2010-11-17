@@ -112,18 +112,18 @@ static void L_PRC_v_sidelight_off_f(void)
 }
 static bool L_PRC_v_sidelight_getstatus_f(void)
 {
-	return DPY_TRM_S01__LED_1_GET_STATE();
+	return DPY_TRM_S01__LED_4_GET_STATE();
 }
 static void L_PRC_v_brakelight_on_f(void)
 {
 	L_PRC_dpy_data1=8;
-	dpy_trm_s01__7seq_write_3digit(1,1,L_PRC_dpy_data1);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1,0);
 
 }
 static void L_PRC_v_brakelight_off_f(void)
 {
 	L_PRC_dpy_data1=1;
-	dpy_trm_s01__7seq_write_3digit(1,1,L_PRC_dpy_data1);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1,0);
 }
 static bool L_PRC_v_brakelight_getstatus_f(void)
 {
@@ -181,9 +181,11 @@ void PRC_v_init_f(void)
 	PRC_stm_tx_message.length = 1;
 	PRC_stm_tx_message.data[0] = 0;		// Egy CAN üzenet összeállítása
 
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1,0);
+
 }
 
-void PRC_v_refresh_control_f(void)
+void PRC_v_refresh_remote_control_f(void)
 {
 	if (CAN_msg_rx_message.id==0x100)
 	{
@@ -282,8 +284,12 @@ void PRC_v_process_f(void)
 	L_PRC_vbl_tailfog_button_prev=L_PRC_vbl_tailfog_button;
 
 }
+void PRC_v_refresh_local_control_f(void)
+{
+	//There is no local control
+}
 
-void PRC_v_refresh_status_f(void)
+void PRC_v_refresh_local_status_f(void)
 {
 	// Getting real state of the lights (bulb is OK or not)
 	L_PRC_vbl_sidelight_status=L_PRC_v_sidelight_getstatus_f();
@@ -291,7 +297,11 @@ void PRC_v_refresh_status_f(void)
 	L_PRC_vbl_tailfog_status=L_PRC_v_tailfog_getstatus_f();
 	L_PRC_vbl_leftind_status=L_PRC_v_leftind_getstatus_f();
 	L_PRC_vbl_rightind_status=L_PRC_v_rightind_getstatus_f();
+}
 
+
+void PRC_v_refresh_message_status_f(void)
+{
 	L_PRC_v_set_msg_byte_bit_f(0,7,L_PRC_vbl_ecu_status);
 	L_PRC_v_set_msg_byte_bit_f(0,4,L_PRC_vbl_brakelight_status);
 	L_PRC_v_set_msg_byte_bit_f(0,3,L_PRC_vbl_tailfog_status);
@@ -304,7 +314,6 @@ void PRC_v_20mstick_f(void)
 {
 	//EMPTY	
 }
-
 /*
  *===========================================================================*
  * End of File                                                         

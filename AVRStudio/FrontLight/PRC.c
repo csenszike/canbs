@@ -139,18 +139,18 @@ static void L_PRC_v_sidelight_off_f(void)
 }
 static bool L_PRC_v_sidelight_getstatus_f(void)
 {
-	return DPY_TRM_S01__LED_1_GET_STATE();
+	return DPY_TRM_S01__LED_4_GET_STATE();
 }
 static void L_PRC_v_lowbeam_on_f(void)
 {
 	L_PRC_dpy_data1=8;
-	dpy_trm_s01__7seq_write_3digit(0,L_PRC_dpy_data1,L_PRC_dpy_data2);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1*10+L_PRC_dpy_data2,0);
 
 }
 static void L_PRC_v_lowbeam_off_f(void)
 {
 	L_PRC_dpy_data1=1;
-	dpy_trm_s01__7seq_write_3digit(0,L_PRC_dpy_data1,L_PRC_dpy_data2);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1*10+L_PRC_dpy_data2,0);
 }
 static bool L_PRC_v_lowbeam_getstatus_f(void)
 {
@@ -163,12 +163,12 @@ static bool L_PRC_v_lowbeam_getstatus_f(void)
 static void L_PRC_v_highbeam_on_f(void)
 {
 	L_PRC_dpy_data2=8;
-	dpy_trm_s01__7seq_write_3digit(0,L_PRC_dpy_data1,L_PRC_dpy_data2);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1*10+L_PRC_dpy_data2,0);
 }
 static void L_PRC_v_highbeam_off_f(void)
 {
 	L_PRC_dpy_data2=1;
-	dpy_trm_s01__7seq_write_3digit(0,L_PRC_dpy_data1,L_PRC_dpy_data2);
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1*10+L_PRC_dpy_data2,0);
 }
 static bool L_PRC_v_highbeam_getstatus_f(void)
 {
@@ -223,14 +223,17 @@ void PRC_v_init_f(void)
 	PRC_stm_tx_message.id = 0x0110;
 	PRC_stm_tx_message.rtr = 0;
 	PRC_stm_tx_message.length = 2;
-	PRC_stm_tx_message.data[0] = 0;
-	PRC_stm_tx_message.data[1] = 0;	// Egy CAN üzenet összeállítása
+	PRC_stm_tx_message.data[0] = 1;
+	PRC_stm_tx_message.data[1] = 1;	// Egy CAN üzenet összeállítása
 	
-	// Initializing lamps
+	// Initializing display
+	DPY_v_trm_s01__7seq_clear_dpy_f();
+	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1*10+L_PRC_dpy_data2,0);
+	
 
 }
 
-void PRC_v_refresh_control_f(void)
+void PRC_v_refresh_remote_control_f(void)
 {
 	if (CAN_msg_rx_message.id==0x100)
 	{
@@ -384,7 +387,12 @@ void PRC_v_process_f(void)
 
 }
 
-void PRC_v_refresh_status_f(void)
+void PRC_v_refresh_local_control_f(void)
+{
+	//There is no local control
+}
+
+void PRC_v_refresh_local_status_f(void)
 {
 	// Getting real state of the lights (bulb is OK or not)
 	L_PRC_vbl_sidelight_status=L_PRC_v_sidelight_getstatus_f();
@@ -393,7 +401,11 @@ void PRC_v_refresh_status_f(void)
 	L_PRC_vbl_headfog_status=L_PRC_v_headfog_getstatus_f();
 	L_PRC_vbl_leftind_status=L_PRC_v_leftind_getstatus_f();
 	L_PRC_vbl_rightind_status=L_PRC_v_rightind_getstatus_f();
+}
 
+
+void PRC_v_refresh_message_status_f(void)
+{
 	L_PRC_v_set_msg_byte_bit_f(0,7,L_PRC_vbl_ecu_status);
 	L_PRC_v_set_msg_byte_bit_f(0,5,L_PRC_vbl_highbeam_status);
 	L_PRC_v_set_msg_byte_bit_f(0,4,L_PRC_vbl_lowbeam_status);
@@ -401,12 +413,16 @@ void PRC_v_refresh_status_f(void)
 	L_PRC_v_set_msg_byte_bit_f(0,2,L_PRC_vbl_rightind_status);
 	L_PRC_v_set_msg_byte_bit_f(0,1,L_PRC_vbl_leftind_status);
 	L_PRC_v_set_msg_byte_bit_f(0,0,L_PRC_vbl_sidelight_status);
+	//Refreshing command
+	L_PRC_v_set_msg_byte_bit_f(1,0,L_PRC_vbl_rightind_command);
+	L_PRC_v_set_msg_byte_bit_f(1,1,L_PRC_vbl_leftind_command);
+	L_PRC_v_set_msg_byte_bit_f(1,2,L_PRC_vbl_sidelight_command);
 
 }
 void PRC_v_20mstick_f(void)
 {
 	L_PRC_vu8_counter+=1;
-	if (L_PRC_vu8_counter==49)		//1 sec. tick
+	if (L_PRC_vu8_counter==24)		//0.5 sec. tick
 	{
 		L_PRC_vbl_blinker=!L_PRC_vbl_blinker;
 		L_PRC_vu8_counter=0;
