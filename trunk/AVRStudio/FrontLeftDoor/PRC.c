@@ -130,7 +130,7 @@ void PRC_v_init_f(void)
 {
 	PRC_stm_tx_message.id = 0x0120;
 	PRC_stm_tx_message.rtr = 0;
-	PRC_stm_tx_message.length = 3;
+	PRC_stm_tx_message.length = 5;
 	PRC_stm_tx_message.data[0] = 0;
 	PRC_stm_tx_message.data[1] = 0;
 	PRC_stm_tx_message.data[2] = 0;
