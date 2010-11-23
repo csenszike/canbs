@@ -8,8 +8,6 @@ MCU = atmega128
 TARGET = CAN_test.elf
 CC = avr-gcc
 
-CPP = avr-g++
-
 ## Options common to compile, link and assembly rules
 COMMON = -mmcu=$(MCU)
 
