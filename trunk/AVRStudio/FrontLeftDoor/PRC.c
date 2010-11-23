@@ -93,9 +93,10 @@ static volatile bool L_PRC_vbl_lock_or		= false;
 static volatile bool L_PRC_vbl_lock_prev	= false;
 static volatile bool L_PRC_vbl_heat_prev	= false;
 
-static uint8_t L_PRC_u8_disp1 = SEG_SPACE;
-static uint8_t L_PRC_u8_disp2 = SEG_SPACE;
-static uint8_t L_PRC_u8_disp3 = SEG_SPACE;
+//variables for displaying lamps on 7-segment sisplay
+static volatile uint8_t L_PRC_dpy_data1=SEG_SPACE;
+static volatile uint8_t L_PRC_dpy_data2=SEG_SPACE;
+static volatile uint8_t L_PRC_dpy_data3=SEG_SPACE;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -106,6 +107,27 @@ CAN_st_message_t PRC_stm_tx_message;
 
 static bool L_PRC_bl_get_msg_byte_bit_f(uint8_t byte,uint8_t bit);
 static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value);
+
+static void L_PRC_v_lock_on_f(void);
+static void L_PRC_v_lock_off_f(void);
+static bool L_PRC_v_lock_getstatus_f(void);
+static void L_PRC_v_heat_on_f(void);
+static void L_PRC_v_heat_off_f(void);
+static bool L_PRC_v_heat_getstatus_f(void);
+static void L_PRC_v_window_up_f(void);
+static void L_PRC_v_window_down_f(void);
+static void L_PRC_v_window_stop_f(void);
+static bool L_PRC_v_window_up_getstatus_f(void);
+static bool L_PRC_v_window_down_getstatus_f(void);
+static void L_PRC_v_mirror_stop_f(void);
+static void L_PRC_v_mirror_left_f(void);
+static void L_PRC_v_mirror_right_f(void);
+static void L_PRC_v_mirror_down_f(void);
+static void L_PRC_v_mirror_up_f(void);
+static bool L_PRC_v_mirror_left_getstatus_f(void);
+static bool L_PRC_v_mirror_right_getstatus_f(void);
+static bool L_PRC_v_mirror_down_getstatus_f(void);
+static bool L_PRC_v_mirror_up_getstatus_f(void);
 
 /*=========================================[ INTERNAL FUNCTION DEFINITIONS ]=*/
 
@@ -121,6 +143,134 @@ static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value)
 	else
 		PRC_stm_tx_message.data[byte] &= ~(1<<bit);
 
+}
+
+/********* KÖZPONTI ZÁR ***********/
+static void L_PRC_v_lock_on_f(void)
+{
+	DPY_TRM_S01__LED_1_ON();
+}
+static void L_PRC_v_lock_off_f(void)
+{
+	DPY_TRM_S01__LED_1_OFF();
+}
+static bool L_PRC_v_lock_getstatus_f(void)
+{
+	return DPY_TRM_S01__LED_1_GET_STATE();
+}
+
+/********* Tükör FÛTÉS ***********/
+static void L_PRC_v_heat_on_f(void)
+{
+	DPY_TRM_S01__LED_2_ON();
+}
+static void L_PRC_v_heat_off_f(void)
+{
+	DPY_TRM_S01__LED_2_OFF();
+}
+static bool L_PRC_v_heat_getstatus_f(void)
+{
+	return DPY_TRM_S01__LED_2_GET_STATE();
+}
+
+/*********** ABLAK ***************/
+
+static void L_PRC_v_window_up_f(void)
+{
+	L_PRC_dpy_data1=1;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_window_down_f(void)
+{
+	L_PRC_dpy_data1=2;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_window_stop_f(void)
+{
+	L_PRC_dpy_data1=0;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static bool L_PRC_v_window_up_getstatus_f(void)
+{
+	if (L_PRC_dpy_data1==1)
+		return true;
+	else
+		return false;
+}
+
+static bool L_PRC_v_window_down_getstatus_f(void)
+{
+	if (L_PRC_dpy_data1==2)
+		return true;
+	else
+		return false;
+}
+
+/*********** Tükör mozgatás ***************/
+
+static void L_PRC_v_mirror_stop_f(void)
+{
+	L_PRC_dpy_data2=0;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_mirror_left_f(void)
+{
+	L_PRC_dpy_data2=4;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_mirror_right_f(void)
+{
+	L_PRC_dpy_data2=3;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_mirror_down_f(void)
+{
+	L_PRC_dpy_data2=2;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static void L_PRC_v_mirror_up_f(void)
+{
+	L_PRC_dpy_data2=1;
+	dpy_trm_s01__7seq_write_3digit(s_n[L_PRC_dpy_data3],s_n[L_PRC_dpy_data2],s_n[L_PRC_dpy_data1]);
+}
+
+static bool L_PRC_v_mirror_left_getstatus_f(void)
+{
+	if (L_PRC_dpy_data2==4)
+		return true;
+	else
+		return false;
+}
+
+static bool L_PRC_v_mirror_right_getstatus_f(void)
+{
+	if (L_PRC_dpy_data2==3)
+		return true;
+	else
+		return false;
+}
+
+static bool L_PRC_v_mirror_down_getstatus_f(void)
+{
+	if (L_PRC_dpy_data2==2)
+		return true;
+	else
+		return false;
+}
+
+static bool L_PRC_v_mirror_up_getstatus_f(void)
+{
+	if (L_PRC_dpy_data2==1)
+		return true;
+	else
+		return false;
 }
 
 /*=========================================[ EXPORTED FUNCTION DEFINITIONS ]=*/
@@ -263,101 +413,54 @@ void PRC_v_process_f(void)
 	{
 		if(L_PRC_vbl_left_front_window_up_bs)        //Window Up 
 		{
-			L_PRC_vbl_window_motor_down_es = false;	
-			L_PRC_vbl_window_motor_up_es = true;
+			L_PRC_v_window_up_f();
 		}	 
 		else if(L_PRC_vbl_left_front_window_down_bs)  //Window Down
 		{
-			L_PRC_vbl_window_motor_down_es = true;
-			L_PRC_vbl_window_motor_up_es = false;
+			L_PRC_v_window_down_f();
 		}  
 	}
 	else
 	{
-		L_PRC_vbl_window_motor_down_es = false;
-		L_PRC_vbl_window_motor_up_es = false;
+		L_PRC_v_window_stop_f();
 	}
 
 	/************** TÜKÖR ****************/
 	// Tükör helyi vezérlése (amíg nyomva tartjuk a gombot, addig mozog a tükör)
-	if(  !L_PRC_vbl_mirror_select_bs &&
-		  (L_PRC_vbl_mirror_up_bs || L_PRC_vbl_mirror_down_bs
-		|| L_PRC_vbl_mirror_left_bs || L_PRC_vbl_mirror_right_bs))
+	// Ha a jobb oldali visszapillantó tükör van kiválasztva
+	if(!L_PRC_vbl_mirror_select_bs)   
 	{
-		if(L_PRC_vbl_mirror_up_bs)        //Mirror Up 
-		{
-			L_PRC_vbl_mirror_left_es = false;	
-			L_PRC_vbl_mirror_right_es = false;	
-			L_PRC_vbl_mirror_down_es = false;	
-			L_PRC_vbl_mirror_up_es = true;
-		}	 
-		else if(L_PRC_vbl_mirror_down_bs)  //Mirror Down
-		{
-			L_PRC_vbl_mirror_left_es = false;	
-			L_PRC_vbl_mirror_right_es = false;	
-			L_PRC_vbl_mirror_down_es = true;	
-			L_PRC_vbl_mirror_up_es = false;
-		}  
-		else if(L_PRC_vbl_mirror_left_bs)  //Mirror Left
-		{
-			L_PRC_vbl_mirror_left_es = true;	
-			L_PRC_vbl_mirror_right_es = false;	
-			L_PRC_vbl_mirror_down_es = false;	
-			L_PRC_vbl_mirror_up_es = false;
-		}  
-		else if(L_PRC_vbl_mirror_right_bs)  //Mirror Right
-		{
-			L_PRC_vbl_mirror_left_es = false;	
-			L_PRC_vbl_mirror_right_es = true;	
-			L_PRC_vbl_mirror_down_es = false;	
-			L_PRC_vbl_mirror_up_es = false;
-		}  
+		if(L_PRC_vbl_mirror_left_bs) 			L_PRC_v_mirror_left_f();
+		else if(L_PRC_vbl_mirror_right_bs)		L_PRC_v_mirror_right_f();
+		else if(L_PRC_vbl_mirror_down_bs)		L_PRC_v_mirror_down_f();
+		else if(L_PRC_vbl_mirror_up_bs)		L_PRC_v_mirror_up_f();
+		else											L_PRC_v_mirror_stop_f();		
 	}
-	else
-	{
-		L_PRC_vbl_mirror_left_es = false;	
-		L_PRC_vbl_mirror_right_es = false;	
-		L_PRC_vbl_mirror_down_es = false;	
-		L_PRC_vbl_mirror_up_es = false;
-	}
+	else	L_PRC_v_mirror_stop_f();
 
 	/************** KÖZPONTI ZÁR ****************/
-	L_PRC_vbl_lock_es = L_PRC_vbl_lock_control;
+	if(L_PRC_vbl_lock_control)	L_PRC_v_lock_on_f();
+	else						L_PRC_v_lock_off_f();	
 
 	/************** TÜKÖR FÛTÉS ****************/
-	L_PRC_vbl_mirror_heat_es = L_PRC_vbl_mirror_heat_control;
+	if(L_PRC_vbl_mirror_heat_control)		L_PRC_v_heat_on_f();
+	else									L_PRC_v_heat_off_f();
 
-	/************** VEZÉRLÉS ****************/
-	if(L_PRC_vbl_window_motor_up_es)
-		L_PRC_u8_disp3 = 1;
-	else if(L_PRC_vbl_window_motor_down_es)
-		L_PRC_u8_disp3 = 2;
-	else
-		L_PRC_u8_disp3 = 0;
-
-	if(L_PRC_vbl_mirror_up_es)
-		L_PRC_u8_disp2 = 1;
-	else if(L_PRC_vbl_mirror_down_es)
-		L_PRC_u8_disp2 = 2;
-	else if(L_PRC_vbl_mirror_right_es)
-		L_PRC_u8_disp2 = 3;
-	else if(L_PRC_vbl_mirror_left_es)
-		L_PRC_u8_disp2 = 4;
-	else
-		L_PRC_u8_disp2 = 0;
-
-	DPY_v_trm_s01__7seq_write_3digit_f(s_n[L_PRC_u8_disp1],s_n[L_PRC_u8_disp2],s_n[L_PRC_u8_disp3]);
-
-	if(L_PRC_vbl_lock_es) DPY_TRM_S01__LED_1_ON();
-	else DPY_TRM_S01__LED_1_OFF();
-
-	if(L_PRC_vbl_mirror_heat_es) DPY_TRM_S01__LED_2_ON();
-	else DPY_TRM_S01__LED_2_OFF();
 }
 
 /********  Refresh local status  ***************************/
 void PRC_v_refresh_local_status_f()
 {
+	// Getting real state of the actuators
+	L_PRC_vbl_window_motor_down_es	= L_PRC_v_window_down_getstatus_f();
+	L_PRC_vbl_window_motor_up_es	= L_PRC_v_window_up_getstatus_f();
+	L_PRC_vbl_lock_es				= L_PRC_v_lock_getstatus_f();
+	L_PRC_vbl_mirror_heat_es		= L_PRC_v_heat_getstatus_f();
+	L_PRC_vbl_mirror_left_es		= L_PRC_v_mirror_left_getstatus_f();
+	L_PRC_vbl_mirror_right_es		= L_PRC_v_mirror_right_getstatus_f();
+	L_PRC_vbl_mirror_down_es		= L_PRC_v_mirror_down_getstatus_f();
+	L_PRC_vbl_mirror_up_es			= L_PRC_v_mirror_up_getstatus_f();
+
 }
 
 /********  PRC 20mstick  ***************************/
