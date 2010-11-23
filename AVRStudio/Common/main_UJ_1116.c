@@ -93,7 +93,9 @@ int16_t main(void)
 		{
 			CAN_vbl_20msTimer_flag=false;
 			PRC_v_refresh_local_control_f();
+			cli();
 			PRC_v_process_f();
+			sei();
 			PRC_v_refresh_local_status_f();
 		}
 	}
