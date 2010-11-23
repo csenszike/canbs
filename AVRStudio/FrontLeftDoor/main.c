@@ -32,7 +32,8 @@
 
 /*======================================================[ INTERNAL GLOBALS ]=*/
 
-bool CAN_vbl_20msTimer_flag=false;
+volatile bool CAN_vbl_20msTimer_flag=false;
+volatile uint16_t CAN_vu16_20msTimer_cnt=0;
 
 /*======================================================[ EXTERNAL GLOBALS ]=*/
 
@@ -47,10 +48,16 @@ int16_t main(void);			/**< The main function*/
 /*******  20 ms timer1 interrupt  ***********/
 ISR(SIG_OUTPUT_COMPARE1A)
 {
+	
 	PRC_v_refresh_message_status_f();
-	CAN_v_can_send_standard_message_f(&PRC_stm_tx_message);	// CAN üzenetküldés
 	//System tick a PRC-nek
 	PRC_v_20mstick_f();
+	CAN_vu16_20msTimer_cnt+=1;
+	if (CAN_vu16_20msTimer_cnt==PRC_U16_SENDX20MS)
+	{
+		CAN_v_can_send_standard_message_f(&PRC_stm_tx_message);	// CAN üzenetküldés
+		CAN_vu16_20msTimer_cnt=0;
+	}
 	CAN_vbl_20msTimer_flag=true;
 }
 
@@ -65,7 +72,7 @@ int16_t main(void)
 	CAN_v_mcp2515_init_f(PRC_U16_FILTER1, PRC_U16_FILTER2);								// A CAN kommunikáció iniciálása
 	CAN_v_can_receive_message_ISR_ENABLE_f(); 			// Üzenet fogadás engedélyezve
 
-	TMR_v_timer1_Init_f(16);
+	TMR_v_timer1_Init_f(50);
 	TMR_v_timer1_start_f();
 
 	PRC_v_init_f();										//Feladatspecifikus inicializációk elvégzése
@@ -86,7 +93,9 @@ int16_t main(void)
 		{
 			CAN_vbl_20msTimer_flag=false;
 			PRC_v_refresh_local_control_f();
+			cli();
 			PRC_v_process_f();
+			sei();
 			PRC_v_refresh_local_status_f();
 		}
 	}
