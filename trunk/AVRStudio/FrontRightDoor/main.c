@@ -65,7 +65,7 @@ int16_t main(void)
 	CAN_v_mcp2515_init_f(PRC_U16_FILTER1, PRC_U16_FILTER2);								// A CAN kommunikáció iniciálása
 	CAN_v_can_receive_message_ISR_ENABLE_f(); 			// Üzenet fogadás engedélyezve
 
-	TMR_v_timer1_Init_f(50);
+	TMR_v_timer1_Init_f(16);
 	TMR_v_timer1_start_f();
 
 	PRC_v_init_f();										//Feladatspecifikus inicializációk elvégzése
