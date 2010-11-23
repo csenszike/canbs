@@ -41,7 +41,7 @@ static volatile bool L_PRC_vbl_win_mirror_up_control= false;
 static volatile bool L_PRC_vbl_win_mirror_down_control= false;
 static volatile bool L_PRC_vbl_win_mirror_select_control= false;
 static volatile bool L_PRC_vbl_win_mirror_heat_control= false;
-static volatile bool L_PRC_vbl_lock_leftbutton= false;
+static volatile bool L_PRC_vbl_lock_left_control= false;
 
 /* Left rear door status bits  (0x120)*/
 // Byte 3
@@ -287,10 +287,7 @@ void PRC_v_refresh_remote_control_f(void)
 	L_PRC_vbl_win_mirror_up_control=    L_PRC_bl_get_msg_byte_bit_f(1,4);
 	L_PRC_vbl_win_mirror_select_control=L_PRC_bl_get_msg_byte_bit_f(1,3);
 	L_PRC_vbl_win_mirror_heat_control=  L_PRC_bl_get_msg_byte_bit_f(4,6);
-	L_PRC_vbl_lock_leftbutton=          L_PRC_bl_get_msg_byte_bit_f(4,7);
-	
-//	L_PRC_vbl_lock_leftstatus= 			  L_PRC_bl_get_msg_byte_bit_f(4,7);
-//	L_PRC_vbl_win_mirror_heat_leftstatus= L_PRC_bl_get_msg_byte_bit_f(4,6);
+	L_PRC_vbl_lock_left_control=        L_PRC_bl_get_msg_byte_bit_f(4,7);
 }
 
 
@@ -332,17 +329,9 @@ void PRC_v_process_f(void)
 	/************** KÖZPONTI ZÁR ****************/
 
 	// Központi zár vezérlése a bal ajtóról 
-	if(L_PRC_vbl_lock_leftbutton)		L_PRC_v_lock_on_f();
+	if(L_PRC_vbl_lock_left_control)		L_PRC_v_lock_on_f();
 	else								L_PRC_v_lock_off_f();	
 	
-	// Központi zár helyi vezérlése (ha megnyomjuk a gombot a központi zár állapota megváltozik) (felfutó él!!!)
-	if((L_PRC_vbl_lock_rightbutton_prev==0) && (L_PRC_vbl_lock_rightbutton==1))
-	{
-		 if(L_PRC_v_lock_getstatus_f()) L_PRC_v_lock_on_f();
-		 else							L_PRC_v_lock_off_f();
-	}
-
-	L_PRC_vbl_lock_rightbutton_prev=L_PRC_vbl_lock_rightstatus;
 
 	/************** TÜKÖR FÛTÉS ****************/
 		
