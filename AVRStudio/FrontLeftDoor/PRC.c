@@ -430,17 +430,17 @@ void PRC_v_process_f(void)
 	// Ha a jobb oldali visszapillantó tükör van kiválasztva
 	if(!L_PRC_vbl_mirror_select_bs)   
 	{
-		if(L_PRC_vbl_mirror_left_bs) 			L_PRC_v_mirror_left_f();
-		else if(L_PRC_vbl_mirror_right_bs)		L_PRC_v_mirror_right_f();
-		else if(L_PRC_vbl_mirror_down_bs)		L_PRC_v_mirror_down_f();
+		if(L_PRC_vbl_mirror_left_bs) 		L_PRC_v_mirror_left_f();
+		else if(L_PRC_vbl_mirror_right_bs)	L_PRC_v_mirror_right_f();
+		else if(L_PRC_vbl_mirror_down_bs)	L_PRC_v_mirror_down_f();
 		else if(L_PRC_vbl_mirror_up_bs)		L_PRC_v_mirror_up_f();
-		else											L_PRC_v_mirror_stop_f();		
+		else								L_PRC_v_mirror_stop_f();		
 	}
 	else	L_PRC_v_mirror_stop_f();
 
 	/************** KÖZPONTI ZÁR ****************/
-	if(L_PRC_vbl_lock_control)	L_PRC_v_lock_on_f();
-	else						L_PRC_v_lock_off_f();	
+	if(L_PRC_vbl_lock_control)				L_PRC_v_lock_on_f();
+	else									L_PRC_v_lock_off_f();	
 
 	/************** TÜKÖR FÛTÉS ****************/
 	if(L_PRC_vbl_mirror_heat_control)		L_PRC_v_heat_on_f();
