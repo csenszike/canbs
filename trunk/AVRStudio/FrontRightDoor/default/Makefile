@@ -47,16 +47,16 @@ all: $(TARGET) CAN_test.hex CAN_test.eep size
 PRC.o: ../PRC.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-dpy_trm_s01.o: ../../Common/dpy_trm_s01.c
+dpy_trm_s01.o: ../../../../../../../AVRStudio/Common/dpy_trm_s01.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-mcp2515.o: ../../Common/mcp2515.c
+mcp2515.o: ../../../../../../../AVRStudio/Common/mcp2515.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-mcu_avr_atmega128_api.o: ../../Common/mcu_avr_atmega128_api.c
+mcu_avr_atmega128_api.o: ../../../../../../../AVRStudio/Common/mcu_avr_atmega128_api.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-TIMER.o: ../../Common/TIMER.c
+TIMER.o: ../../../../../../../AVRStudio/Common/TIMER.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 main.o: ../main.c

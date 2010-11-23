@@ -124,8 +124,6 @@ static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value)
 }
 
 
-// Handling bulbs
-
 /********* KÖZPONTI ZÁR ***********/
 static void L_PRC_v_lock_on_f(void)
 {
