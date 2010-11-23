@@ -15,7 +15,7 @@ COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -Os -std=gnu99 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -Wall -gdwarf-2 -std=gnu99 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
 
 ## Assembly specific flags
@@ -36,8 +36,11 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
+## Include Directories
+INCLUDES = -I"D:\Dokumentumok\BME\2010-2011 1. félév\rendszertervezés\SVN\AVRStudio\RearLight\..\Common" -I"D:\Dokumentumok\BME\2010-2011 1. félév\rendszertervezés\SVN\AVRStudio\RearLight\." 
+
 ## Objects that must be built in order to link
-OBJECTS = dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o PRC.o main.o 
+OBJECTS = main.o PRC.o dpy_trm_s01.o mcp2515.o mcu_avr_atmega128_api.o TIMER.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -46,6 +49,12 @@ LINKONLYOBJECTS =
 all: $(TARGET) RearLight.hex RearLight.eep RearLight.lss size
 
 ## Compile
+main.o: ../main.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+PRC.o: ../PRC.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
 dpy_trm_s01.o: ../../Common/dpy_trm_s01.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
@@ -56,12 +65,6 @@ mcu_avr_atmega128_api.o: ../../Common/mcu_avr_atmega128_api.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 TIMER.o: ../../Common/TIMER.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
-
-PRC.o: ../PRC.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
-
-main.o: ../main.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
