@@ -9,8 +9,8 @@
 /*=======================================================[ EXTERNAL MACROS ]=*/
 /* macro constants and read macros */
 
-#define PRC_U16_FILTER1		0x0120
-#define PRC_U16_FILTER2		0x0120
+#define PRC_U16_FILTER1		0x120
+#define PRC_U16_FILTER2		0x120
 
 /*=====================================================[ EXTERNAL TYPEDEFS ]=*/
 /* State Machine Constants */

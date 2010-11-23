@@ -105,6 +105,8 @@ static void L_PRC_bl_set_msg_byte_bit_f(uint8_t byte,uint8_t bit,bool value)
 /********  Initialisation  ***************************/
 void PRC_v_init_f(void)
 {
+	SYS_LED_DIR_OUTPUT();
+
 	PRC_stm_tx_message.id = L_REA_MSGID;
 	PRC_stm_tx_message.rtr = 0;
 	PRC_stm_tx_message.length = 3;
@@ -116,10 +118,17 @@ void PRC_v_init_f(void)
 
 void PRC_v_refresh_remote_control_f()
 {
-	L_PRC_vbl_win_engine_up_control=    L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINUP);
-	L_PRC_vbl_win_engine_down_control=  L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINDW);
-	L_PRC_vbl_lock_frontleftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);	
-	L_PRC_vbl_lock_frontleftstatus= 			L_PRC_bl_get_msg_byte_bit_f(4,7);
+	if(CAN_msg_rx_message.id==PRC_U16_FILTER1)
+	{
+		L_PRC_vbl_win_engine_up_control=    L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINUP);
+		L_PRC_vbl_win_engine_down_control=  L_PRC_bl_get_msg_byte_bit_f(0,L_REA_WINDW);
+		L_PRC_vbl_lock_frontleftbutton=          L_PRC_bl_get_msg_byte_bit_f(1,0);	
+		L_PRC_vbl_lock_frontleftstatus= 			L_PRC_bl_get_msg_byte_bit_f(4,7);
+	}
+	else
+	{
+		if(SYS_LED_GET_VALUE()) SYS_LED_OFF(); else SYS_LED_ON();
+	}
 }
 
 void PRC_v_process_f()
