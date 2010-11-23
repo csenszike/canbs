@@ -182,6 +182,7 @@ void PRC_v_init_f(void)
 	PRC_stm_tx_message.data[0] = 0;		// Egy CAN üzenet összeállítása
 
 	DPY_u8_trm_s01__7seq_write_number_f(L_PRC_dpy_data1,0);
+	SYS_LED_DIR_OUTPUT();
 
 }
 
@@ -196,6 +197,11 @@ void PRC_v_refresh_remote_control_f(void)
 		// Byte 4
 		// Bit 4 - rear fog light
 		L_PRC_vbl_tailfog_button=L_PRC_bl_get_msg_byte_bit_f(4,4);
+		// debug
+		if (SYS_LED_GET_VALUE())
+			SYS_LED_OFF();
+		else SYS_LED_ON();
+		
 	}
 	//message from the headlight ECU
 	else if (CAN_msg_rx_message.id==0x110)
@@ -203,7 +209,13 @@ void PRC_v_refresh_remote_control_f(void)
 		L_PRC_vbl_sidelight_command=L_PRC_bl_get_msg_byte_bit_f(1,2);
 		L_PRC_vbl_leftind_command=L_PRC_bl_get_msg_byte_bit_f(1,1);
 		L_PRC_vbl_rightind_command=L_PRC_bl_get_msg_byte_bit_f(1,0);
+		
+		
 
+	}
+	else
+	{
+		
 	}
 
 }
