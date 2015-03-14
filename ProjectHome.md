@@ -1,0 +1,1 @@
+This project is the first iteration of designing a CAN communication based car body system. The developers are university students, and they work on this project as a homework.
